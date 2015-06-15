@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:context="http://www.springframework.org/schema/context"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+		http://www.springframework.org/schema/context
+		http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+
+	<bean id="socketConfig" class="com.corundumstudio.socketio.SocketConfig">
+		<property name="reuseAddress" value="true"/>
+	</bean>
+
+	<bean id="socketioConfig" class="com.corundumstudio.socketio.Configuration">
+		<property name="hostname" value="0.0.0.0" />
+		<property name="port" value="8888" />
+		<property name="socketConfig" ref="socketConfig"/>
+	</bean>
+
+	<bean id="socketIOServer" class="com.corundumstudio.socketio.SocketIOServer"
+		  scope="singleton">
+		<constructor-arg ref="socketioConfig" />
+	</bean>
+
+	<context:component-scan base-package="personal.jeremy.socketio.service" />
+
+	<context:component-scan base-package="personal.jeremy.socketio.test" />
+
+
+	<bean id="webAnnotationInvoker" class="personal.jeremy.socketio.service.WebAnnotationInvoker">
+		<property name="pkgs">
+			<list value-type="java.lang.String">
+				<value>personal.jeremy.socketio.test</value>
+			</list>
+		</property>
+	</bean>
+
+</beans>
